@@ -1,3 +1,4 @@
+// features: 随机生成结点关系，并以凹入图呈现
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
