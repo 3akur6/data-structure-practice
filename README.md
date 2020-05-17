@@ -46,6 +46,6 @@ judge the palindrome string, apparently using stack structure
 ### sequential binary tree
 ---
 
-basic sequential binary tree structure
+basic sequential binary tree structure   
 generate relationship randomly and display this in a form of several recessed bars   
 ![sequential binary tree](https://github.com/3akur6/data-structure-practice/blob/master/assets/seq_bin_tree.png)
