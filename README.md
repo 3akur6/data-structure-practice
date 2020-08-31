@@ -13,10 +13,11 @@ four fundamental rules of complex
 ### student table
 ---
 
-a simple student table program which supports CURD    
+a simple student table program which supports CRUD    
 features:    
 * give a user interface and colorful output
 * use `readline.h` to strongly deal with user's input    
+* add one or more items to database in smarter way    
 ![student table](https://github.com/3akur6/data-structure-practice/blob/master/assets/student_table.png)
 
 ### link list
