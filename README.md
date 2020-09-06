@@ -18,6 +18,7 @@ features:
 * give a user interface and colorful output
 * use `readline.h` to strongly deal with user's input    
 * add one or more items to database in smarter way    
+* two edition: sequential list and linked list
 ![student table](https://github.com/3akur6/data-structure-practice/blob/master/assets/student_table.png)
 
 ### link list

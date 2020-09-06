@@ -12,22 +12,23 @@
 #define CMD 9        //表操作命令数
 // #define MAXINPUT 20
 
-typedef struct
+typedef struct student
 {
     char id[ID_LENGTH];   //学号
     char name[NAME_SIZE]; //姓名
     int score;            //分数
+    struct student *next;
 } student;
 
 typedef struct
 {
-    student *item; //顺序表数据域指针
-    int length;    //顺序表长度
+    student *item; //链表指针（无头指针）
+    int length;    //链表长度（便于直接统计记录数）
 } student_table;   //以学号为主键
 
 //以下int表示逻辑顺序，而非存储顺序
-bool init_table(student_table *);                    //初始化顺序表
-bool table_insert(student_table *, int, student);    //向表中插入记录
+bool init_table(student_table *);                    //初始化链表
+bool table_insert(student_table *, int, student *);  //向表中插入记录
 bool table_delete(student_table *, int);             //指定位置，删除记录
 bool table_read(student_table *, char *, student *); //指定位置，检索记录
 bool table_update(student_table *, char *, int);     //指定位置，更新数据
@@ -42,7 +43,8 @@ void command_exec(char *, student_table *);   //用户输入分流，执行表�
 // int * ngets(char *);
 void show_banner(); //显示自定义欢迎标题
 
-const char *commands[CMD] = {"help", "create", "delete", "update", "read", "total", "table", "quit", "exit"}; //表操作命令集合
+//表操作命令集合
+const char *commands[CMD] = {"help", "create", "delete", "update", "read", "total", "table", "quit", "exit"}; 
 
 int main(void)
 {
@@ -63,25 +65,38 @@ int main(void)
 
 bool init_table(student_table *table)
 {
-    table->item = (student *)malloc(sizeof(student) * MAXSIZE);
-    if (!table->item)
-    {
-        return false;
-    }
-    table->length = 0;
+    table->item = NULL; //尾指针置空
+    table->length = 0;  //初始化链表长度
     return true;
 }
 
-bool table_insert(student_table *table, int location, student item)
+bool table_insert(student_table *table, int location, student *item)
 {
     if (location >= 1 && location <= MAXSIZE && table->length + 1 <= MAXSIZE)
     {
-        int i;
-        for (i = table->length - 1; i >= location - 1; --i)
+        student *next;
+        //插入分两种情况讨论：插入到首元节点前和插入到其他位置
+        //保存插入位置前驱
+        //修改插入记录next指针，指向未修改前当前位置指针
+        //前驱next指针指向插入记录
+        if (location == 1)
         {
-            *(table->item + i + 1) = *(table->item + i);
+            next = table->item;
+            item->next = next;
+            table->item = item;
         }
-        *(table->item + location - 1) = item;
+        else
+        {
+            int i = 1;
+            student *pre = table->item;
+            while (++i != location)
+            {
+                pre = pre->next;
+            }
+            next = pre->next;
+            item->next = next;
+            pre->next = item;
+        }
         table->length++;
         return true;
     }
@@ -92,10 +107,27 @@ bool table_delete(student_table *table, int location)
 {
     if (location >= 1 && location <= table->length)
     {
-        for (int i = location; i <= table->length - 1; ++i)
+        student *next;
+        student *delete;
+        if (location == 1)
         {
-            *(table->item + i - 1) = *(table->item + i);
+            delete = table->item;
+            next = delete->next;
+            table->item = next;
         }
+        else
+        {
+            int i = 1;
+            student *pre = table->item;
+            while (++i != location)
+            {
+                pre = pre->next;
+            }
+            delete = pre->next;
+            next = delete->next;
+            pre->next = next;
+        }
+        free(delete);
         table->length--;
         return true;
     }
@@ -104,28 +136,30 @@ bool table_delete(student_table *table, int location)
 
 bool table_read(student_table *table, char *id, student *retn)
 {
-    for (int i = 0; i <= table->length - 1; ++i)
+    student *current = table->item;
+    for (int i = 1; i <= table->length; ++i)
     {
-        student stud = *(table->item + i);
-        if (!strcmp(stud.id, id))
+        if (!strcmp(current->id, id))
         {
-            *retn = stud;
+            *retn = *current;
             return true;
         }
+        current = current->next;
     }
     return false;
 }
 
 bool table_update(student_table *table, char *id, int scr)
 {
-    for (int i = 0; i <= table->length - 1; ++i)
+    student *current = table->item;
+    for (int i = 1; i <= table->length; ++i)
     {
-        student *stud = table->item + i;
-        if (!strcmp(stud->id, id))
+        if (!strcmp(current->id, id))
         {
-            stud->score = scr;
+            current->score = scr;
             return true;
         }
+        current = current->next;
     }
     return false;
 }
@@ -159,9 +193,11 @@ void show_student(student *stud)
 void show_table(student_table *table)
 {
     student *list[table->length];
+    student *current = table->item;
     for (int i = 0; i < table->length; ++i)
     {
-        list[i] = table->item + i;
+        list[i] = current;
+        current = current->next;
     }
     terminal_table("Student Table", list, table->length);
 }
@@ -199,7 +235,7 @@ void command_exec(char *cmd, student_table *table)
     case 1:
     {
         int location;
-        student stud;
+        student *stud = (student *)malloc(sizeof(student));
         int items; //单次插入的记录数，默认为1
         int flag;
         //从用户输入获得单次插入的记录数
@@ -234,9 +270,9 @@ void command_exec(char *cmd, student_table *table)
                     location = table->length + 1;
                 }
             }
-            strcpy(stud.id, readline("\033[7mid\033[0m: "));
-            strcpy(stud.name, readline("\033[7mname\033[0m: "));
-            stud.score = atoi(readline("\033[7mscore\033[0m: "));
+            strcpy(stud->id, readline("\033[7mid\033[0m: "));
+            strcpy(stud->name, readline("\033[7mname\033[0m: "));
+            stud->score = atoi(readline("\033[7mscore\033[0m: "));
             printf("\n");
             table_insert(table, location, stud);
         }
@@ -269,7 +305,6 @@ void command_exec(char *cmd, student_table *table)
     case 4:
     {
         char *id = readline("\n\033[7mid\033[0m: ");
-        printf("\n");
         student stud;
         if (table_read(table, id, &stud))
         {
@@ -344,7 +379,7 @@ void show_banner()
         "\n"
         " |_____/ \\__|\\__,_|\\__,_|\\___|_| |_|\\__|    |_|\\__,_|_.__/|_|\\___|"
         "\n"
-        "                                                                  "
+        "                                                       [link list]"
         "\n"
         "                                                                  "
         "\n";
