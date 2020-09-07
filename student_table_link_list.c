@@ -235,7 +235,6 @@ void command_exec(char *cmd, student_table *table)
     case 1:
     {
         int location;
-        student *stud = (student *)malloc(sizeof(student));
         int items; //单次插入的记录数，默认为1
         int flag;
         //从用户输入获得单次插入的记录数
@@ -249,6 +248,7 @@ void command_exec(char *cmd, student_table *table)
         //获取记录内容并插入数据表
         while (items--)
         {
+            student *stud = (student *)malloc(sizeof(student));
             if (!table_total(table))
             {
                 printf("\n");
