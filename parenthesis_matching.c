@@ -25,6 +25,12 @@ const char PARENTHESES[LEN + 1] = "()[]{}"; //可匹配的括号类型
 
 int main(int argc, char const *argv[])
 {
+    if (argc != 2) //检查命令行参数，有且仅有一个表达式
+    {
+        printf("Usage: %s [expression]\n", argv[0]);
+        return 0;
+    }
+
     const char *expression = argv[1]; //从命令行参数获取待判断字符串
     int length = strlen(expression);
     int m = match(expression, length);
@@ -44,34 +50,34 @@ int match(const char *exp, int length)
 {
     Stack cache;
 
-    stack_init(&cache);
+    stack_init(&cache); //创建空栈对象
 
     for (int i = 0; i < length; i++)
     {
         char current = *(exp + i);
         int loc = find(PARENTHESES, current, LEN);
 
-        if (loc)
+        if (loc) //判断当前字符是否为PARENTHESES中字符
         {
-            if (loc % 2)
+            if (loc % 2) //判断是否为左括号
             {
-                push(&cache, current);
+                push(&cache, current); //左括号入栈
             }
             else
             {
-                ELEMTYPE top = pop(&cache);
-                if (top != PARENTHESES[loc - 2])
+                ELEMTYPE top = pop(&cache);      //栈顶括号出栈
+                if (top != PARENTHESES[loc - 2]) //判断栈顶括号是否与当前右括号匹配，不匹配则直接返回匹配不成功位置
                 {
-                    return i + 1;
+                    return (i + 1);
                 }
             }
         }
     }
-    if (cache.top)
+    if (cache.top) //表达式全部检查完，检查缓存栈是否为空，非空则表示左括号未完全匹配
     {
         return -1;
     }
-    return 0;
+    return 0; //否则表示完全匹配
 }
 
 int find(const char *s, char c, int length)
@@ -88,15 +94,15 @@ int find(const char *s, char c, int length)
 
 int stack_init(Stack *stack)
 {
-    stack->top = 0;
+    stack->top = 0; //栈顶标记为0,表示栈空
 }
 
 bool push(Stack *stack, ELEMTYPE item)
 {
-    if (stack->top < MAXSIZE)
+    if (stack->top < MAXSIZE) //检查是否栈满
     {
-        (stack->data)[stack->top] = item;
-        (stack->top)++;
+        (stack->data)[stack->top] = item; //元素入顺序栈
+        (stack->top)++;                   //栈顶抬高
         return true;
     }
     return false;
@@ -104,10 +110,10 @@ bool push(Stack *stack, ELEMTYPE item)
 
 ELEMTYPE pop(Stack *stack)
 {
-    if (stack->top)
+    if (stack->top) //检查栈非空
     {
-        ELEMTYPE rtrn = (stack->data)[stack->top - 1];
-        (stack->top)--;
+        ELEMTYPE rtrn = (stack->data)[stack->top - 1]; //保存栈顶元素
+        (stack->top)--;                                //栈顶指针下移
         return rtrn;
     }
 }
