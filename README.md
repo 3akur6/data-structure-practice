@@ -5,6 +5,13 @@ code for homework but still be **fun**
 
 add some colorful display and animation in linux terminal
 
+### parenthesis matching
+---
+
+check for balanced parentheses in an expression   
+get expression from command line arguments   
+![parenthesis matching](https://github.com/3akur6/data-structure-practice/blob/master/assets/parenthesis_matching.png)
+
 ### complex
 ---
 
