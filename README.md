@@ -5,6 +5,15 @@ code for homework but still be **fun**
 
 add some colorful display and animation in linux terminal
 
+### binary tree
+---
+
+build binary tree from specified string   
+output binary tree preorder, inorder, postorder, depth, amount of leaves   
+![binary tree](https://github.com/3akur6/data-structure-practice/blob/master/assets/binary_tree.png)
+![binary tree example](https://github.com/3akur6/data-structure-practice/blob/master/assets/binary_tree_example.png)
+
+
 ### parenthesis matching
 ---
 
