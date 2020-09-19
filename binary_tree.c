@@ -59,7 +59,7 @@ int main(void)
 
     //获取用户输入
     scanf("%s", input);
-    
+
     printf("\n");
 
     //格式化用户输入，并抽象成二叉树
@@ -234,7 +234,7 @@ int parse_btree(BinTree *btree, char *input, int length)
     }
 
     btree->data = *input;
-    
+
     if (length <= 2)
     {
         return 1;
