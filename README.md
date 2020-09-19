@@ -11,7 +11,7 @@ add some colorful display and animation in linux terminal
 DFS algorithm for adjacent matrix graph   
 
 ![graph depth first search](https://github.com/3akur6/data-structure-practice/blob/master/assets/graph_depth_first_search.png)
-![graph depth first search example](https://github.com/3akur6/data-structure-practice/blob.master/assets/graph_example.png)
+![graph depth first search example](https://github.com/3akur6/data-structure-practice/blob/master/assets/graph_example.png)
 
 ### binary tree
 ---
