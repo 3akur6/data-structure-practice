@@ -5,6 +5,14 @@ code for homework but still be **fun**
 
 add some colorful display and animation in linux terminal
 
+### Dijkstra's algorithm
+---
+
+Dijkstra's algorithm for finding the shortest paths between vertices in a graph   
+
+![Dijkstra's algorithm](https://github.com/3akur6/data-structure-practice/blob/master/assets/dijkstra_algorithm.png)
+![Dijkstra's algorithm example](https://github.com/3akur6/data-structure-practice/blob/master/assets/dijkstra_example.png)
+
 ### graph depth first search
 ---
 
