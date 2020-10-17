@@ -8,7 +8,7 @@ add some colorful display and animation in linux terminal
 ### merge sort
 ---
 
-Merge sort algorithm recursion version   
+merge sort algorithm recursion version   
 
 ### Dijkstra's algorithm
 ---
