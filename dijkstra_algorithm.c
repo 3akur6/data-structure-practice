@@ -30,7 +30,7 @@ bool shift(Array *, ELEMTYPE *); //返回新数组首元素
 int locate(AdjacentMatrixGraph *, ELEMTYPE);               //定位顶点在顶点集的位置,返回数组下标
 int path_value(AdjacentMatrixGraph *, Array *[SIZE], int); //计算带权路径长度，接收参数为图指针、路径数组、目的顶点的数组下标
 void show_path(AdjacentMatrixGraph *, Array *[SIZE]);      //自定义函数显示路径
-void show_matrix(int [MAXSIZE][MAXSIZE]);
+void show_matrix(int[MAXSIZE][MAXSIZE]);
 
 //指定顶点列表
 const ELEMTYPE vertices[SIZE] = {0, 1, 2, 3, 4, 5};
